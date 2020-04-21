@@ -1,4 +1,4 @@
-from page_reader import PageReader
+import pagereader
 
 class Page:
     def __init__(self, name, prev_page, depth):
@@ -10,7 +10,8 @@ class LinkSearch:
     def __init__(self, name_start, goal_name):
         self.start = Page(name_start, None, 0)
         self.goal_name = goal_name
-        self.pr = PageReader()
+        self.pr = pagereader.PageReader()
+
 
     def getPageChain(self, last_page):
         current_page = last_page
@@ -19,13 +20,14 @@ class LinkSearch:
             page_chain.append(current_page.name)
             current_page = current_page.prev_page
         return page_chain[::-1]
-
-    def bfs(self, max_depth=10):
+    #0 = inf
+    def bfs(self, max_depth=0):
         to_search = [self.start]
-
         while to_search:
             current_page = to_search[0]
-            print("Current:", current_page.name)
+            if (max_depth != 0) and (current_page.depth >= max_depth):
+                print('max depth reached')
+                return None
             if current_page.name == self.goal_name:
                 return self.getPageChain(current_page)
 
