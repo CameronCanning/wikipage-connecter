@@ -9,9 +9,9 @@ class Page:
 class LinkSearch:
     def __init__(self, name_start, goal_name):
         self.start = Page(name_start, None, 0)
-        self.goal_name = goal_name
+        self.goal_names = goal_name
         self.pr = pagereader.PageReader()
-
+        self.searched_set = set()
 
     def getPageChain(self, last_page):
         current_page = last_page
@@ -20,19 +20,23 @@ class LinkSearch:
             page_chain.append(current_page.name)
             current_page = current_page.prev_page
         return page_chain[::-1]
-    #0 = inf
-    def bfs(self, max_depth=0):
+
+
+    def bfs(self, max_depth=3):
         to_search = [self.start]
-        while to_search:
-            current_page = to_search[0]
-            if (max_depth != 0) and (current_page.depth >= max_depth):
-                print('max depth reached')
-                return None
-            if current_page.name == self.goal_name:
-                return self.getPageChain(current_page)
-
-            new_page_names = self.pr.getPageLinks(current_page.name)
-            for page_name in new_page_names:
-                to_search.append(Page(page_name, current_page, current_page.depth + 1))
-
-            to_search = to_search[1:]
+        to_expand = []
+        while True:
+            if to_search:
+                print(to_search[0].name.encode("utf-8"))
+                if to_search[0].name == self.goal_name:
+                    return self.getPageChain(to_search[0])
+                self.searched_set.add(to_search[0])
+                to_expand.append(to_search[0])
+                to_search = to_search[1:]
+            elif to_expand:
+                new_page_names = self.pr.getPageLinks(to_expand[0].name)
+                for page_name in new_page_names:
+                    if page_name not in self.searched_set:
+                        page = Page(page_name, to_expand[0], to_expand[0].depth + 1)
+                        to_search.append(page)
+                to_expand = to_expand[1:]
