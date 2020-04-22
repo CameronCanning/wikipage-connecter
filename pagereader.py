@@ -55,5 +55,12 @@ class PageReader:
 
         req = self.sess.get(url=self.url ,params=params)
         data = req.json()
+        #print(json.dumps(data, indent=4))
+        if "nomalized" in data["query"].keys():
+            page_title = data["query"]["normalized"][0]["to"]
+
+        page_id = int(list(data["query"]["pages"])[0])
+        #-1 is returned when page doesn't exist
+        assert(page_id >= 0)
         #page id, normalized name
-        return int(list(data["query"]["pages"])[0]), data["query"]["normalized"][0]["to"]
+        return page_id, page_title
