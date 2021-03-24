@@ -5,6 +5,7 @@ class PageReader:
     def __init__(self):
         self.sess = requests.Session()
         self.url = "https://en.wikipedia.org/w/api.php"
+        self.glhcontinue = None
 
     def getBatch(self, params, verbose = False):
         page_info = []
@@ -64,3 +65,26 @@ class PageReader:
         assert(page_id >= 0)
         #page id, normalized name
         return page_id, page_title
+
+    def getLinksHere(self, page_id):
+        page_info = []
+        params = {
+            "action": "query",
+            "format": "json",
+            #"pageids": page_title,
+            "titles": 'Super_Smash_Bros._Melee',
+            "generator": "linkshere",
+            "glhprop": "pageid",
+            "glhlimit": "max",
+            "glhnamespace": 0,           
+        }
+        
+        if self.glhcontinue:
+            params["glhcontinue"] = self.glhcontinue
+            
+        page_info, b_continue = self.getBatch(params)
+        #print(len(page_info))
+        if b_continue:
+            self.glhcontinue = self.data["continue"]["glhcontinue"]
+        
+        return page_info
