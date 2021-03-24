@@ -71,8 +71,8 @@ class PageReader:
         params = {
             "action": "query",
             "format": "json",
-            #"pageids": page_title,
-            "titles": 'Super_Smash_Bros._Melee',
+            "pageids": page_id,
+            #"titles": 'Super_Smash_Bros._Melee',
             "generator": "linkshere",
             "glhprop": "pageid",
             "glhlimit": "max",
