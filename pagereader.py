@@ -65,7 +65,7 @@ class PageReader:
         #page id, normalized name
         return page_id, page_title
 
-    def getLinksHere(self, page_id, max_batches=2):
+    def getLinksHere(self, page_id, max_batches=float('inf')):
         page_info = []
         batches = 1
         complete = False
@@ -73,7 +73,6 @@ class PageReader:
             "action": "query",
             "format": "json",
             "pageids": page_id,
-            #"titles": 'Super_Smash_Bros._Melee',
             "generator": "linkshere",
             "glhprop": "pageid",
             "glhlimit": "max",
