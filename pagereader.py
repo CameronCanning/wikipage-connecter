@@ -18,7 +18,6 @@ class PageReader:
             return
 
         pages = self.data["query"]["pages"]
-
         for page in pages.values():
             if "missing" not in page.keys():
                 page_info.append((page["title"], int(page["pageid"])))
@@ -66,8 +65,10 @@ class PageReader:
         #page id, normalized name
         return page_id, page_title
 
-    def getLinksHere(self, page_id):
+    def getLinksHere(self, page_id, max_batches=2):
         page_info = []
+        batches = 1
+        complete = False
         params = {
             "action": "query",
             "format": "json",
@@ -78,13 +79,21 @@ class PageReader:
             "glhlimit": "max",
             "glhnamespace": 0,           
         }
-        
+            
         if self.glhcontinue:
             params["glhcontinue"] = self.glhcontinue
-            
-        page_info, b_continue = self.getBatch(params)
-        #print(len(page_info))
-        if b_continue:
-            self.glhcontinue = self.data["continue"]["glhcontinue"]
         
+        page_info_batch, b_continue = self.getBatch(params)
+        page_info += page_info_batch
+
+        while b_continue and batches < max_batches:
+            self.glhcontinue = self.data["continue"]["glhcontinue"]
+            params["glhcontinue"] = self.glhcontinue
+            page_info_batch, b_continue = self.getBatch(params)
+            page_info += page_info_batch               
+            batches += 1
+        
+        if b_continue: 
+            self.glhcontinue = self.data["continue"]["glhcontinue"]
+
         return page_info
