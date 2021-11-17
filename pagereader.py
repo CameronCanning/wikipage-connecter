@@ -75,8 +75,8 @@ class PageReader:
             "format": "json",
             "pageids": page_id,
             "generator": "linkshere",
-            "glhprop": "redirect",
-            "glhlimit": "50",
+            #"glhprop": "redirect",
+            "glhlimit": "max",
             "glhnamespace": 0,           
         }
             

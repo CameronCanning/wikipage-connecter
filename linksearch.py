@@ -6,7 +6,7 @@ class Page:
         self.id = id
         self.prev_page = prev_page
         self.next_page = next_page
-        
+
     def __hash__(self):
         return hash(self.id)
     def __eq__(self, other):
@@ -28,6 +28,8 @@ class LinkSearch:
         self.goal_set = set()
         self.count = 0
 
+    #TODO parse html of each page to find link name
+    #since <a http=/Almond (fruit)> nut</a> != nut
     def getPageChain(self):
         current_page = self.goal
         page_chain = []
@@ -40,18 +42,16 @@ class LinkSearch:
     def search(self):
         to_search = [self.start]
         to_expand = []
-        
-        for page_name, page_id in self.pr.getLinksHere(self.goal.id, 4):
+        print('Generating Goal Set...')
+        for page_name, page_id in self.pr.getLinksHere(self.goal.id, 8):
             self.goal_set.add(Page(page_name, page_id, None, self.goal))
 
         while True:
             if to_search:
                 if to_search[0] == self.goal:
-                    print('\ngoal')
                     self.goal.prev_page = to_search[0].prev
                     return self.getPageChain()
                 elif to_search[0] in self.goal_set:
-                    print('\ngoalset')
                     self.goal.prev_page = to_search[0]
                     return self.getPageChain()
                 self.count += len(self.goal_set) + 1
@@ -66,5 +66,3 @@ class LinkSearch:
                         page = Page(page_name, page_id, to_expand[0])
                         to_search.append(page)
                 to_expand = to_expand[1:]
-
-
