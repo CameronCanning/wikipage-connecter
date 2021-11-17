@@ -16,7 +16,7 @@ def main():
     chain = linksearch.LinkSearch(args.start_page[0], args.end_page[0]).search()
 
     if chain:
-        print('Chain:')
+        print('\nChain:')
         print(*chain, sep=" > ")
 
 

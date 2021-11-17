@@ -11,6 +11,7 @@ class PageReader:
         page_info = []
         req = self.sess.get(url=self.url ,params=params)
         self.data = req.json()
+
         if verbose:
             print(json.dumps(self.data, indent=4))
         if "warnings" in self.data.keys():
@@ -74,8 +75,8 @@ class PageReader:
             "format": "json",
             "pageids": page_id,
             "generator": "linkshere",
-            "glhprop": "pageid",
-            "glhlimit": "max",
+            "glhprop": "redirect",
+            "glhlimit": "50",
             "glhnamespace": 0,           
         }
             

@@ -32,13 +32,12 @@ class LinkSearch:
         current_page = self.goal
         page_chain = []
         while current_page != None:
-            print(current_page.prev_page)
             page_chain.append(current_page.name)
             current_page = current_page.prev_page
         return page_chain[::-1]
 
 
-    def bfs(self):
+    def search(self):
         to_search = [self.start]
         to_expand = []
         
@@ -48,13 +47,12 @@ class LinkSearch:
         while True:
             if to_search:
                 if to_search[0] == self.goal:
+                    print('\ngoal')
                     self.goal.prev_page = to_search[0].prev
                     return self.getPageChain()
                 elif to_search[0] in self.goal_set:
-                    print(to_search[0])
-                    print(to_search[0].prev_page)
+                    print('\ngoalset')
                     self.goal.prev_page = to_search[0]
-                    print('\ngoal_set')
                     return self.getPageChain()
                 self.count += len(self.goal_set) + 1
                 print('Searched:', self.count, flush = True, end='\r')
@@ -69,13 +67,4 @@ class LinkSearch:
                         to_search.append(page)
                 to_expand = to_expand[1:]
 
-    def bds(self):
-        to_search_left = [self.start]
-        to_search_right = [self.goal]
-    def search(self):
-        
-        return self.bfs()
 
-#todo
-    #let goal be every page that directs to goal page
-    #use categories for priority
