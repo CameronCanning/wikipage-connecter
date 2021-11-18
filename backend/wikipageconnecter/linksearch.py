@@ -1,4 +1,4 @@
-import pagereader
+from .pagereader import PageReader
 
 class Page:
     def __init__(self, name, id, prev_page=None, next_page=None):
@@ -19,7 +19,7 @@ class Page:
 
 class LinkSearch:
     def __init__(self, start_name, goal_name):
-        self.pr = pagereader.PageReader()
+        self.pr = PageReader()
         start_id, start_norm_name = self.pr.getPageId(start_name)
         self.start = Page(start_norm_name, start_id)
         goal_id, goal_norm_name = self.pr.getPageId(goal_name)
@@ -33,6 +33,7 @@ class LinkSearch:
     def getPageChain(self):
         current_page = self.goal
         page_chain = []
+        
         while current_page != None:
             page_chain.append(current_page.name)
             current_page = current_page.prev_page

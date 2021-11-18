@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 class PageReader:
     def __init__(self):
         self.sess = requests.Session()

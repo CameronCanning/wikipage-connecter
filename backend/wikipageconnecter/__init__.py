@@ -1,6 +1,7 @@
 import os
+from .linksearch import LinkSearch
 from flask import Flask, request
-#from linksearch import LinkSearch
+
 
 print('importing wpc')
 def create_app(test_config = None):
@@ -21,9 +22,18 @@ def create_app(test_config = None):
     #except OSError:
         #pass
 
+    
+
     @app.route('/link', methods=['GET'])
     def link():
-        params = request.args.to_dict()
-        return params
+        start = request.args.get('start')
+        end = request.args.get('end')
+
+        if not start or not end:
+            return 'bad', 400
+
+        chain = LinkSearch(start, end).search()
+
+        return {'chain': chain}
     
     return app
