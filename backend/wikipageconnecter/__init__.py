@@ -26,8 +26,9 @@ def create_app(test_config = None):
 
     @app.route('/link', methods=['GET'])
     def link():
-        start = request.args.get('start')
-        end = request.args.get('end')
+        print(request.args.get('start'))
+        start = request.args.get('start', type = str)
+        end = request.args.get('end', type = str)
 
         if not start or not end:
             return 'bad', 400
