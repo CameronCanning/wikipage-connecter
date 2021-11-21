@@ -1,31 +1,33 @@
 import { useState } from 'react';
 import './App.css';
-
+import SearchBox from './SearchBox';
 const axios = require('axios');
 
-const FLASK_URL = 'http://localhost:5000'
 function App() {
-	const [start, setStart] = useState('Canada');
-	const [end, setEnd] = useState('Almond');
+	const [start, setStart] = useState('');
+	const [end, setEnd] = useState('');
 	const [chain, setChain] = useState([]);
 
 	const getChain = () => {
-		axios.get('link', {params: {'start': start, 'end': end}})
-		.then(res => setChain(res.data.chain))
+		axios.get('link', {params: {start: start, end: end}})
+		.then(res => setChain(res.data.chain));
 	}
+
+
+	
 	return (
 		<div className="App">
-			<input 
-				type='text'
-				value={start}
-				onChange={(e) => setStart(e.target.value)}/>	
-			<input 
-				type='text'
-				value={end}
-				onChange={(e) => setEnd(e.target.value)}/>
+			<SearchBox
+				setPage={setStart}/>
+			<SearchBox 
+				setPage={setEnd}/>
 			<button onClick={getChain}>get</button>
-			{chain.map(x => <p key={x}>{x}</p>)}
+			<div>
 
+				{chain.reduce((prev, curr) => prev += ' ' + curr, '')}
+
+			</div>
+			
 		</div>
   	);
 }
