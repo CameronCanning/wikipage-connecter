@@ -1,6 +1,7 @@
 
 from wikipageconnecter import create_app
 import pytest
+from wikipageconnecter.wikiclient import WikiClient
 
 
 @pytest.fixture
@@ -9,4 +10,3 @@ def client():
 
     with app.test_client() as client:
         yield client
-

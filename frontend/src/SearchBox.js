@@ -1,27 +1,28 @@
 import { useState } from 'react';
+const axios = require('axios');
+
 
 
 function SearchBox({queryPages, setPage}) {
-    const [query, setQuery] = useState('')
-    const [queryResults, setQueryResults] = useState([])  
+    const [searchString, setSearchString] = useState('')
+    const [searchResults, setSearchResults] = useState([])  
 
     const handleInputChange = (e) => {
-		setQuery(e.target.value);
-        setPage(e.target.value);
-        setQueryResults(e.target.value.split(''));
-
-        setPage(e.target.value);
+        axios.get('search', {params: {search_string: e.target.value}})
+        .then(res => setSearchResults(res.data.results))
+        console.log(searchResults)
+		setSearchString(e.target.value);
     };
 
-    
+
     return (
     <div>    
         <input 
             type='text'
-            value={query}
+            value={searchString}
             onChange={handleInputChange}/>
         <div>
-            {queryResults.map((x,i) => 
+            {searchResults.map((x,i) => 
                 <div key={i}>
                     <p>{x}</p>
                 </div>

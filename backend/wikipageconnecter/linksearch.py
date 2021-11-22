@@ -1,4 +1,4 @@
-from .pagereader import PageReader
+from .wikiclient import WikiClient
 
 class Page:
     def __init__(self, name, id, prev_page=None, next_page=None):
@@ -19,10 +19,10 @@ class Page:
 
 class LinkSearch:
     def __init__(self, start_name, goal_name):
-        self.pr = PageReader()
-        start_id, start_norm_name = self.pr.getPageId(start_name)
+        self.w_client= WikiClient()
+        start_id, start_norm_name = self.w_client.getPageId(start_name)
         self.start = Page(start_norm_name, start_id)
-        goal_id, goal_norm_name = self.pr.getPageId(goal_name)
+        goal_id, goal_norm_name = self.w_client.getPageId(goal_name)
         self.goal = Page(goal_norm_name, goal_id)
         self.searched_set = set()
         self.goal_set = set()
@@ -44,7 +44,7 @@ class LinkSearch:
         to_search = [self.start]
         to_expand = []
         print('Generating Goal Set...')
-        for page_name, page_id in self.pr.getLinksHere(self.goal.id, 8):
+        for page_name, page_id in self.w_client.getLinksHere(self.goal.id, 8):
             self.goal_set.add(Page(page_name, page_id, None, self.goal))
 
         while True:
@@ -61,7 +61,7 @@ class LinkSearch:
                 to_expand.append(to_search[0])
                 to_search = to_search[1:]
             elif to_expand:
-                page_info = self.pr.getPageLinks(to_expand[0].name)
+                page_info = self.w_client.getPageLinks(to_expand[0].name)
                 for page_name, page_id in page_info:
                     if page_id not in self.searched_set:
                         page = Page(page_name, page_id, to_expand[0])

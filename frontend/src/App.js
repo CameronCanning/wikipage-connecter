@@ -13,8 +13,6 @@ function App() {
 		.then(res => setChain(res.data.chain));
 	}
 
-
-	
 	return (
 		<div className="App">
 			<SearchBox
@@ -23,9 +21,7 @@ function App() {
 				setPage={setEnd}/>
 			<button onClick={getChain}>get</button>
 			<div>
-
 				{chain.reduce((prev, curr) => prev += ' ' + curr, '')}
-
 			</div>
 			
 		</div>

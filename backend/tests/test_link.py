@@ -6,6 +6,6 @@ def test_one_params(client):
     rv = client.get('/link', query_string = {'start': 'Almond'})
     assert rv.status_code == 400
 
-def test_two_params(client):
+def test_both_params(client):
     rv = client.get('/link', query_string = {'start': 'Almond', 'end': 'Canada'})
     assert rv.status_code == 200

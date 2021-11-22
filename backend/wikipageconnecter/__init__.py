@@ -1,9 +1,9 @@
 import os
+
+from .wikiclient import WikiClient
 from .linksearch import LinkSearch
 from flask import Flask, request
 
-
-print('importing wpc')
 def create_app(test_config = None):
     app = Flask(__name__)
     app.config.from_mapping(
@@ -26,7 +26,6 @@ def create_app(test_config = None):
 
     @app.route('/link', methods=['GET'])
     def link():
-        print(request.args.get('start'))
         start = request.args.get('start', type = str)
         end = request.args.get('end', type = str)
 
@@ -37,4 +36,15 @@ def create_app(test_config = None):
 
         return {'chain': chain}
     
+    @app.route('/search', methods=['GET'])
+    def search():
+        search_string = request.args.get('search_string')
+
+        if search_string == '':
+            return {'results': []}
+
+        results = WikiClient().getSearch(search_string)
+        return {'results': results}
+
+
     return app
