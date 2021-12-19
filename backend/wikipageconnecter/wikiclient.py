@@ -100,7 +100,7 @@ class WikiClient:
             self.glhcontinue = self.data['continue']['glhcontinue']
 
         #TODO: test this
-        #self.glhcontinue = None
+        self.glhcontinue = None
 
         return page_info
 
@@ -112,7 +112,7 @@ class WikiClient:
             #'namespace': 0
         }
         res = self._get(params)
-        
-        return res.json()[1][1:]
+
+        return res.json()[1]
 
 

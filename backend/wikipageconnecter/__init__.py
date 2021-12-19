@@ -32,18 +32,24 @@ def create_app(test_config = None):
         if not start or not end:
             return 'bad', 400
 
+        start = start.replace(' ','_') 
+        end = end.replace(' ','_')
+        print(start, end)
         chain = LinkSearch(start, end).search()
 
+        for i in range(len(chain)):
+            chain[i] = chain[i].replace('_', ' ')
+            
         return {'chain': chain}
     
     @app.route('/search', methods=['GET'])
     def search():
-        search_string = request.args.get('search_string')
+        string = request.args.get('string')
 
-        if search_string == '':
+        if string == '':
             return {'results': []}
 
-        results = WikiClient().getSearch(search_string)
+        results = WikiClient().getSearch(string)
         return {'results': results}
 
 
