@@ -10,10 +10,9 @@ const Results = styled.div`
 `
 const Result = styled.div`
     outline-top: 1px solid black;
-    text-align: left;
+    text-align: center;
 `
 const SearchBoxWrapper = styled.div`
-
 `
 
 function SearchBox({page, setPage}) {

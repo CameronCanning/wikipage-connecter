@@ -3,7 +3,14 @@ import SearchBox from './components/SearchBox';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import styled from 'styled-components';
 const axios = require('axios');
+
+const StyledApp = styled.div`
+	background-color: green;	
+	margin: auto;
+	text-align: center;
+`
 
 function App() {
 	const [start, setStart] = useState('');
@@ -18,27 +25,29 @@ function App() {
 	const isMobile = window.innerWidth <= 500;
 	if (!isMobile) {
 		return (
-				<Container fluid>
-					<Row>
-						<p>Chain</p>
-						{chain.reduce((prev, curr) => prev += ' ' + curr, '')}
-					</Row>
-					<Row>
-						<Col>
-							<SearchBox
-								page={start}
-								setPage={setStart}/>
-						</Col>
-						<Col>
-							<button onClick={getChain}>get</button>
-						</Col>
-						<Col>
-							<SearchBox 
-								page={end}
-								setPage={setEnd}/>
-						</Col>
-					</Row>
-				</Container>
+				<StyledApp>
+					<Container fluid>
+						<Row>
+							<p>Chain</p>
+							{chain.reduce((prev, curr) => prev += ' ' + curr, '')}
+						</Row>
+						<Row>
+							<Col style={{backgroundColor: 'red', width:'100px'}}>
+								<SearchBox
+									page={start}
+									setPage={setStart}/>
+							</Col>
+							<Col style={{backgroundColor: 'blue', width:'100px'}}>
+								<button onClick={getChain}>get</button>
+							</Col>
+							<Col style={{backgroundColor: 'yellow'}}>
+								<SearchBox 
+									page={end}
+									setPage={setEnd}/>
+							</Col>
+						</Row>
+					</Container>
+				</StyledApp>
 		)}
 	else {
 		return <p>mobile</p>
